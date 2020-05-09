@@ -2,6 +2,7 @@ import React from "react";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { makeStyles } from "@material-ui/core/styles";
 import UserCard from "./components/UserCard";
+import FollowerCard from "./components/FollowerCard";
 import axios from "axios";
 
 const userData = {
@@ -29,9 +30,11 @@ class App extends React.Component {
       .then(
         axios
           .get("https://api.github.com/users/mhidalgo83/followers")
-          .then((res) =>{this.setState({followers: res.data})})
+          .then((res) => {
+            this.setState({ followers: res.data });
+          })
       );
-    this.setState({ user: userData })
+    this.setState({ user: userData });
     console.log(this.state.followers);
   }
 
@@ -43,8 +46,8 @@ class App extends React.Component {
         <div>
           <UserCard key={this.state.user.name} user={this.state.user} />;
         </div>
-        {this.state.followers.map((user) => {
-          return <UserCard key={user.name} user={user} />;
+        {this.state.followers.map((follower) => {
+          return <FollowerCard key={follower.name} user={follower} />;
         })}
         <div></div>
       </CssBaseline>

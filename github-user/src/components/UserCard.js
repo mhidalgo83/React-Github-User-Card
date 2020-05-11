@@ -9,8 +9,8 @@ import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   root: {
-    width: "25%",
-    margin: "2% auto",
+    // width: "25%",
+   
   },
   img: {
     borderRadius: "50%",

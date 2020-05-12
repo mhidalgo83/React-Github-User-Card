@@ -72,6 +72,7 @@ const followerData = [
     name: "Matthew Hidalgo",
   },
 ];
+
 class App extends React.Component {
   state = {
     user: {},
@@ -79,46 +80,49 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const profiles = [];
-    // axios
-    //   .get(
-    //     "https://cors-anywhere.herokuapp.com/https://api.github.com/users/mhidalgo83"
-    //   )
-    //   .then((res) => {
-    //     this.setState({ user: res.data });
-    //   })
-    //   .catch((err) => console.log(err))
-    //   .then(
-    //     axios
-    //       .get(
-    //         "https://cors-anywhere.herokuapp.com/https://api.github.com/users/mhidalgo83/followers"
-    //       )
-    //       .then((res) => {
-    //         const followerData = res.data;
-    //         followerData.forEach((data) => {
-    //           axios
-    //             .get(
-    //               `https://cors-anywhere.herokuapp.com/https://api.github.com/users/${data.login}`
-    //             )
-    //             .then((res) => {
-    //               const profData = res.data;
-    //               profiles.push(profData);
-    //             })
-    //             .then(this.setState({ followers: profiles }))
-    //             .catch((err) => {
-    //               console.log(err);
-    //             });
-    //         });
-    //       })
-    //   );
-    this.setState({ user: userData });
-    this.setState({ followers: followerData });
+    axios
+      .get(
+        "https://cors-anywhere.herokuapp.com/https://api.github.com/users/mhidalgo83"
+      )
+      .then((res) => {
+        this.setState({ user: res.data });
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .then(
+        axios
+          .get(
+            "https://cors-anywhere.herokuapp.com/https://api.github.com/users/mhidalgo83/followers"
+          )
+          .then((res) => {
+            const followerData = res.data;
+            followerData.forEach((data) => {
+              axios
+                .get(
+                  `https://cors-anywhere.herokuapp.com/https://api.github.com/users/${data.login}`
+                )
+                .then((res) => {
+                  const profData = res.data;
+                  this.setState({
+                    followers: [...this.state.followers, profData],
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            });
+          })
+      );
 
-    console.log(profiles);
+    // this.setState({ user: userData });
+    // this.setState({ followers: followerData });
   }
 
+  renderFollowers = () => {};
+
   render() {
-    console.log(this.state.followers);
+    console.log("Followers: ", this.state.followers);
     return (
       <CssBaseline>
         <h1>Github Users of Lambda</h1>
